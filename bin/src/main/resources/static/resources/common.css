@@ -1,0 +1,85 @@
+@charset "UTF-8";
+body {
+	min-width: 800px;	
+}
+
+@font-face {
+  font-family: 'LotteMartDream';
+  font-style: normal;
+  font-weight: 400;
+  src: url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff') format('woff');
+}
+@font-face {
+  font-family: 'LotteMartDream';
+  font-style: normal;
+  font-weight: 700;
+  src: url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff') format('woff');
+}
+@font-face {
+  font-family: 'LotteMartDream';
+  font-style: normal;
+  font-weight: 300;
+  src: url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff') format('woff');
+}
+html body {
+ font-family: 'LotteMartDream', sans-serif;
+}
+
+/* 라이브러리 */
+.table-box-type-1 > table {
+  width:100%;
+}
+
+.table-box-type-1 > table th,
+.table-box-type-1 > table td{
+  border:1px solid gray;
+  padding:10px;
+} 
+
+.div-table-type-1 p{
+	padding: 10px;
+	border-bottom: 1px solid gray;
+}
+
+.div-table-type-1 div{
+	margin: 0px;
+	display: grid;
+	grid-template-columns: 80px 1fr;
+} 
+
+.div-table-type-1 div:first-of-type{
+	margin: 0px;
+	display: grid;
+	grid-template-columns: 80px 1fr;
+	border-top: 1px solid gray;
+} 
+
+.div-table-type-1 p:first-of-type{
+	border-right: 1px solid gray;
+}
+
+.btn-text-link{
+	padding: 5px;
+	color: #808080;
+}
+
+.btn-text-link:hover{
+	text-decoration: underline;
+}
+
+.nav li:hover {
+	background-color: #dddddd;
+}
+
+.dropdown {
+	display: none;
+}
+
+.dropdown li {
+	font-size: 15px;
+	background-color: #eeeeee;
+}
+
+.nav li:hover .dropdown {
+	display: inline
+}
