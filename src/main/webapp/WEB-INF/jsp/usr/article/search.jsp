@@ -33,7 +33,7 @@
 				<div>
 					<form action="/usr/article/search">
 					
-						<input type="hidden" name="boardId" value="${board.id }" />
+						<input type="hidden" name="boardId" value="${boardId }" />
 						
 						<select id="limitSelect" class="select select-bordered m-1 max-w-xs select-sm w-28" name="type">
 							<option id="tb" value="0">제목+내용</option>
@@ -103,24 +103,28 @@
 			</div>
 			
 			<div class="flex justify-center btn-group page-menu">
+				<c:set var="pageMemuArmLength" value="6" />
 				
+				<c:set var="startPage" value="${currentPage - pageMemuArmLength >= 1 ? currentPage - pageMemuArmLength : 1}" />
+        		<c:set var="endPage" value="${currentPage + pageMemuArmLength <= pages ? currentPage + pageMemuArmLength : pages}" />
 				<c:if test="${pages != 1 }">
-					<c:if test="${currentPage != 1 }">
-						<a class="btn btn-xs" href="?str=${str}&type=${type}&boardId=${board.id }&page=1&limit=${limit}"><<</a>
-						<a class="btn btn-xs" href=?str=${str}&type=${type}&boardId=${board.id }&page=${currentPage-1}&limit=${limit}"><</a>
+					<c:if test="${startPage > 1 }">
+						<a class="btn btn-xs" href="?str=${str}&type=${type}&boardId=${boardId }&page=1&limit=${limit}"><<</a>
+						<a class="btn btn-xs" href=?str=${str}&type=${type}&boardId=${boardId }&page=${currentPage-1}&limit=${limit}"><</a>
 					</c:if>
 					
-					<c:forEach var="i" begin="1" end="${pages }">
-						<c:if test="${i >= currentPage-2 && i <= currentPage+2}">
+					<c:forEach begin="${startPage }" end="${endPage }" var="i">
+						
+						<c:if test="${i >= currentPage-pageMemuArmLength && i <= currentPage+pageMemuArmLength}">
 							
-							<a class='btn btn-xs ${i == currentPage ? "btn-disabled btn-active" : "" }' href="?str=${str}&type=${type}&boardId=${board.id }&page=${i}&limit=${limit}">${i }</a>
+							<a class='btn btn-xs ${i == currentPage ? "btn-disabled btn-active" : "" }' href="?str=${str}&type=${type}&boardId=${boardId }&page=${i}&limit=${limit}">${i }</a>
 						</c:if>
 						
 					</c:forEach>
 					
-					<c:if test="${currentPage != pages }">
-						<a class="btn btn-xs" href="?str=${str}&type=${type}&boardId=${board.id }&page=${currentPage+1}&limit=${limit}">></a>
-						<a class="btn btn-xs" href="?str=${str}&type=${type}&boardId=${board.id }&page=${pages}&limit=${limit}">>></a>
+					<c:if test="${endPage < pages }">
+						<a class="btn btn-xs" href="?str=${str}&type=${type}&boardId=${boardId }&page=${currentPage+1}&limit=${limit}">></a>
+						<a class="btn btn-xs" href="?str=${str}&type=${type}&boardId=${boardId }&page=${pages}&limit=${limit}">>></a>
 					</c:if>
 				</c:if>
 				
@@ -130,7 +134,7 @@
 </main>
 <script>
 	function changeLimit(value){
-		location.replace('?str=${str}&boardId=${board.id}&type=${type}&page=${currentPage}&limit=' + value)
+		location.replace('?str=${str}&boardId=${boardId}&type=${type}&page=${currentPage}&limit=' + value)
 	}
 </script>
 	

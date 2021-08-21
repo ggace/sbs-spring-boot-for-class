@@ -67,6 +67,7 @@ public class UsrArticleController {
 		model.addAttribute("articles", articles);
 		model.addAttribute("articlesCount", articlesCount);
 		model.addAttribute("board", board);
+		model.addAttribute("boardId", board.getId());
 		model.addAttribute("pages", pages);
 		model.addAttribute("currentPage", page);
 		model.addAttribute("limit", limit);
@@ -111,6 +112,7 @@ public class UsrArticleController {
 
 		model.addAttribute("articles", articles);
 		model.addAttribute("articlesCount", articlesCount);
+		model.addAttribute("boardId", board.getId());
 		model.addAttribute("board", board);
 		model.addAttribute("pages", pages);
 		model.addAttribute("currentPage", page);
