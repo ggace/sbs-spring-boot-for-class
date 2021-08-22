@@ -48,6 +48,7 @@ public class ArticleService {
 		if(article == null) {
 			return;
 		}
+		
 		ResultData actorCanDeleteRd = actorCanDelete(actorId, article);
 		article.setExtra__actorCanDelete(actorCanDeleteRd.isSuccess());
 	}
@@ -130,5 +131,11 @@ public class ArticleService {
 	public int getArticlesCountAfterSearching(Integer boardId, String str, Integer type) {
 		return articleDao.getArticlesCountAfterSearching(boardId, str, type);
 	}
+
+	public void doAddHitCount(int id) {
+		articleDao.doAddHitCount(id);
+	}
+
+	
 
 }

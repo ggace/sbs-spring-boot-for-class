@@ -11,14 +11,14 @@
 		ON A.memberId = M.id
         WHERE boardId = #{boardId}
         <if test='type == 0'>
-        	AND (A.title LIKE #{str}
-        	OR A.body LIKE #{str})
+        	AND (A.title LIKE CONCAT('%', #{str}, '%')
+        	OR A.body LIKE CONCAT('%', #{str}, '%'))
         </if>
         <if test='type == 1'>
-        	AND A.title LIKE #{str}
+        	AND A.title LIKE CONCAT('%', #{str}, '%')
         </if>
         <if test='type == 2'>
-        	AND A.body LIKE #{str}
+        	AND A.body LIKE CONCAT('%', #{str}, '%')
         </if>
         
         ORDER BY ID DESC
@@ -85,14 +85,14 @@
 			AND A.boardId = #{boardId}
 		</if>
 		<if test='type == 0'>
-        	AND (A.title LIKE #{str}
-        	OR A.body LIKE #{str})
+        	AND (A.title LIKE CONCAT('%', #{str}, '%')
+        	OR A.body LIKE CONCAT('%', #{str}, '%'))
         </if>
         <if test='type == 1'>
-        	AND A.title LIKE #{str}
+        	AND A.title LIKE CONCAT('%', #{str}, '%')
         </if>
         <if test='type == 2'>
-        	AND A.body LIKE #{str}
+        	AND A.body LIKE CONCAT('%', #{str}, '%')
         </if>
 	</select>
 	
@@ -137,5 +137,12 @@
 		</set>
 		WHERE id=#{id}
 	</update>
+	
+	<update id="doAddHitCount">
+		UPDATE article
+		SET hitCount = hitCount + 1
+	</update>
+	
+	
 
 </mapper>

@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:set var="pageTitle" value="${board.name } 게시물 페이지" />
+<c:set var="pageTitle" value="${board.name } 게시물 검색 페이지" />
 <%@include file="../common/header.jspf" %>
 
 
@@ -16,7 +16,7 @@
 				<div>
 					<form action="" class="flex w-full">
 						
-						<select id="limitSelect" class="select select-bordered m-1 max-w-xs select-sm w-24" onchange="changeLimit(value)" name="limit">
+						<select data-value="${limit }" id="limitSelect" class="select select-bordered m-1 max-w-xs select-sm w-24" onchange="changeLimit(value)" name="limit">
 							<option disabled selected>제한 수</option>
 							<option id="5" value="5">5</option>
 							<option id="10" value="10">10</option>
@@ -35,7 +35,7 @@
 					
 						<input type="hidden" name="boardId" value="${boardId }" />
 						
-						<select id="limitSelect" class="select select-bordered m-1 max-w-xs select-sm w-28" name="type">
+						<select data-value="${type }" id="limitSelect" class="select select-bordered m-1 max-w-xs select-sm w-28" name="type">
 							<option id="tb" value="0">제목+내용</option>
 							<option id="t" value="1">제목</option>
 							<option id="b" value="2">내용</option>
@@ -60,8 +60,8 @@
 		<div class="container mx-auto px-3">
 			
 			
-			<div class="table-box-type-1">
-				<table>
+			<div class="mt-3">
+				<table class="table table-fixed w-full">
 					<colgroup>
 						<col width="50"/>
 						<col width="150"/>
@@ -89,7 +89,7 @@
 								<td>${article.updateDateForPrint }</td>
 								<td>${article.extra__writerName }</td>
 								<td>
-									<a class="btn btn-link btn-sm" href="/usr/article/detail?id=${article.id }">${article.title }</a>
+									<a class="btn-text-link block w-full truncate" href="/usr/article/detail?id=${article.id }">${article.title }</a>
 								</td>
 							</tr>
 						</c:forEach>

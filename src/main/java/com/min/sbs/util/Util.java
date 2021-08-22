@@ -55,4 +55,13 @@ public class Util {
 				""", msg, uri);
 	}
 
+	public static String jsJustReplace(String string) {
+		return Util.format("""
+				<script>
+				
+				location.replace("%s")
+				</script>
+				""", string);
+	}
+
 }

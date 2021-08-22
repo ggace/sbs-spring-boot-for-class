@@ -26,15 +26,6 @@ html body {
 }
 
 /* 라이브러리 */
-.table-box-type-1 > table {
-  width:100%;
-}
-
-.table-box-type-1 > table th,
-.table-box-type-1 > table td{
-  border:1px solid gray;
-  padding:10px;
-} 
 
 .div-table-type-1 p{
 	padding: 10px;
@@ -65,10 +56,6 @@ html body {
 
 .btn-text-link:hover{
 	text-decoration: underline;
-}
-
-.nav li:hover {
-	background-color: #dddddd;
 }
 
 .dropdown {

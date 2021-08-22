@@ -31,6 +31,11 @@
 					<p class="whitespace-pre-line break-all">${article.body}</p>
 				</div>					
 			</div>
+			<div class="flex">
+				<a href="/usr/article/doArticleLike?id=${article.id }" class="m-1 btn btn-secondary btn-sm ${isLike ? "btn-active" : "btn-outline" }">좋아요 ${likeCount }</a>
+				<div class="flex-grow"></div>
+				<p>조회수 ${article.hitCount }</p>
+			</div>
 			<div class="flex mt-1">
 				<button class="btn btn-link btn-sm" onclick="history.back()">뒤로가기</button>
 				<div class="flex flex-grow"></div>
@@ -41,7 +46,6 @@
 			</div>
 		</div>
 		
-		
 	</section>
 	<%String error = (String)request.getAttribute("errors"); %>
 	<%if(error != null  && !error.equals("")){ %>
@@ -50,4 +54,12 @@
 			location.replace("/usr/article/list")
 		</script>
 	<%} %>
+	
+	<script>
+	window.onpageshow = function(event) {
+	    if(event.persisted || window.performance && window.performance.navigation.type == 2){
+	        location.reload();
+	    }
+	}
+	</script>
 <%@include file="../common/foot.jspf" %>

@@ -117,7 +117,6 @@
 	</logger>
 	
 	<logger name="com.min.sbs.interceptor" level="DEBUG">
-		<appender-ref ref="Console" />
 		<appender-ref ref="ConnectionFile" />
 		<appender-ref ref="Error" />
 	</logger>

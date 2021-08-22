@@ -27,6 +27,7 @@ updateDate = NOW(),
 `code` = 'free1',
 `name` = '자유';
 
+
 # 회원 테이블 생성
 CREATE TABLE `member` (
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -81,13 +82,15 @@ CREATE TABLE article (
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL,
     updateDate DATETIME NOT NULL,
-    boardId INT(10) UNSIGNED NOT NULL,
     memberId INT(10) UNSIGNED NOT NULL,
+    boardId INT(10) UNSIGNED NOT NULL,
     title CHAR(100) NOT NULL,
     `body` TEXT NOT NULL,
+    `like` INT(10) UNSIGNED DEFAULT 0,
+    whoLike TEXT DEFAULT '',
     
     FOREIGN KEY(memberId) REFERENCES `member`(id),
-    FOREIGN KEY(boardId) REFERENCES board(id)
+    FOREIGN KEY(boardId) REFERENCES `board`(id)
 );
 
 # 게시물, 테스트 데이터 생성
@@ -95,7 +98,7 @@ INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
 memberId = 1,
-boardId=1,
+boardId = 1,
 title = '제목 1',
 `body` = '내용 1';
 
@@ -103,7 +106,7 @@ INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
 memberId = 1,
-boardId=1,
+boardId = 1,
 title = '제목 2',
 `body` = '내용 2';
 
@@ -111,10 +114,8 @@ INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
 memberId = 1,
-boardId=2,
+boardId = 2,
 title = '제목 3',
 `body` = '내용 3';
 
-SELECT * FROM `member`;
-SELECT * FROM article;
-SELECT * FROM board;
+SELECT * FROM article

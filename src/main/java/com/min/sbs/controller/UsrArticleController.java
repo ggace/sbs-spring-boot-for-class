@@ -10,39 +10,58 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.min.sbs.dto.Article;
 import com.min.sbs.dto.Board;
+import com.min.sbs.dto.Like;
 import com.min.sbs.dto.ResultData;
 import com.min.sbs.dto.Rq;
 import com.min.sbs.service.ArticleService;
 import com.min.sbs.service.BoardService;
+import com.min.sbs.service.LikeService;
 import com.min.sbs.util.Util;
 
 @Controller
 public class UsrArticleController {
 	private ArticleService articleService;
 	private BoardService boardService;
+	private LikeService likeService; 
 	private Rq rq;
 
-	public UsrArticleController(ArticleService articleService, BoardService boardService, Rq rq) {
+	public UsrArticleController(ArticleService articleService, BoardService boardService, LikeService likeService, Rq rq) {
 		this.articleService = articleService;
 		this.boardService = boardService;
+		this.likeService = likeService;
 		this.rq = rq;
+	}
+	
+	@RequestMapping("/usr/article/doArticleLike")
+	@ResponseBody
+	public String doArticleLike(Model model, Integer id) {
+		if(id == null) {
+			return Util.jsHistoryBack("id를 입력해주세요");
+		}
+		
+		Like like = likeService.getIsLikeArticle(id, rq.getLoginedMemberId());
+		if(like == null) {
+			likeService.doArticleLike(id, rq.getLoginedMemberId());
+		}
+		else {
+			likeService.doCancelArticleLike(id, rq.getLoginedMemberId());
+		}
+		
+		
+		return Util.jsHistoryBack("");
 	}
 
 	@RequestMapping("/usr/article/search")
-	public String search(Model model, String str, Integer boardId, @RequestParam(defaultValue = "1") int page,
+	public String search(Model model, @RequestParam(defaultValue = "") String str, Integer boardId, @RequestParam(defaultValue = "1") int page,
 			@RequestParam(defaultValue = "10") int limit, @RequestParam(defaultValue = "0") int type) {
 
-		if (Util.isEmpty(str)) {
-			return rq.historyBackJsOnView("str를 입력해주세요");
-		}
-
-		String innerText = "%" + str + "%";
+		
 
 		if (boardId == null) {
 			return rq.historyBackJsOnView("boardId를 입력해주세요");
 		}
 
-		int articlesCount = articleService.getArticlesCountAfterSearching(boardId, innerText, type);
+		int articlesCount = articleService.getArticlesCountAfterSearching(boardId, str, type);
 		int startIndex = (page - 1) * limit;
 
 		if (startIndex >= articlesCount) {
@@ -56,7 +75,7 @@ public class UsrArticleController {
 		}
 
 		List<Article> articles = articleService.getForPrintLimitedArticlesByInnerTextAndtype(rq.getLoginedMemberId(),
-				boardId, startIndex, limit, innerText, type);
+				boardId, startIndex, limit, str, type);
 
 		if (articles == null) {
 			return rq.historyBackJsOnView("게시물이 존재하지 않습니다.");
@@ -146,11 +165,24 @@ public class UsrArticleController {
 		}
 
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
+		articleService.doAddHitCount(id);
 
 		if (article == null) {
 			model.addAttribute("errors", Util.format("%s번 게시물은 존재하지 않습니다.", id));
 			return "usr/article/detail";
 		}
+		
+		Like like = likeService.getIsLikeArticle(id, rq.getLoginedMemberId());
+		int likeCount = likeService.getLikeCount(id);
+		
+		if(like == null) {
+			model.addAttribute("isLike", false);
+		}
+		else {
+			model.addAttribute("isLike", true);
+		}
+		model.addAttribute("likeCount", likeCount);
+		
 		model.addAttribute("article", article);
 		return "usr/article/detail";
 	}

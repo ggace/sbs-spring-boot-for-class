@@ -40,4 +40,8 @@ public interface ArticleDao {
 
 	public int getArticlesCountAfterSearching(Integer boardId, String str, Integer type);
 
+	public void doAddHitCount(int id);
+
+	
+
 }
