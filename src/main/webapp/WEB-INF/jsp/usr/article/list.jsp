@@ -61,7 +61,7 @@
 			
 			
 			<div class="mt-3">
-				<table class="table table-fixed w-full">
+				<table class="table table-fixed w-full ">
 					<colgroup>
 						<col width="50"/>
 						<col width="150"/>
@@ -89,7 +89,9 @@
 								<td>${article.updateDateForPrint }</td>
 								<td>${article.extra__writerName }</td>
 								<td>
-									<a class="btn-text-link block w-full truncate" href="/usr/article/detail?id=${article.id }">${article.title }</a>
+									<a class="btn-text-link block w-full truncate" href="/usr/article/detail?id=${article.id }">
+										${article.title }
+									</a>
 								</td>
 							</tr>
 						</c:forEach>
