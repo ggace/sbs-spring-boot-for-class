@@ -28,15 +28,36 @@ function getParam(sname) {
 
 }
 
-function increaseHitCount() {
-	$.get("/usr/article/increaseHitCount",{
+function getHitCount(){
+	$.get("/usr/article/getHitCount",{
 	      id: getParam("id"),
 	    ajaxMode: "Y"
 	}, function(data){
-	    $(".article-detail__hit-count").empty().html(`조회수 ${data.data}`);
+	    $(".article-detail__hit-count").empty().html(`조회수 ${data.data1}`);
 	}, 'json');
 }
 
-
+function increaseHitCount() {
 	
-setTimeout(()=> increaseHitCount(), 0)
+	const localStorageKey = `article__${getParam("id")}__viewDone`;
+	
+	
+	
+	if(localStorage.getItem(localStorageKey)){
+		getHitCount();
+		return;
+	}
+	
+	localStorage.setItem(localStorageKey, true);
+	
+	$.get("/usr/article/doIncreaseHitCount",{
+	      id: getParam("id"),
+	    ajaxMode: "Y"
+	}, function(data){
+	    $(".article-detail__hit-count").empty().html(`조회수 ${data.data1}`);
+	}, 'json');
+	
+	
+}
+
+increaseHitCount()

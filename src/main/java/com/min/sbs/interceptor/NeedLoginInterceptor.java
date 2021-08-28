@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.min.sbs.dto.Rq;
+import com.min.sbs.util.Util;
 
 @Component
 public class NeedLoginInterceptor implements HandlerInterceptor {
@@ -16,7 +17,8 @@ public class NeedLoginInterceptor implements HandlerInterceptor {
 		
 		Rq rq = (Rq)request.getAttribute("rq");
 		if (!rq.isLogined()) {
-			rq.printHistoryBack("로그인 후 사용해주세요");
+			//rq.printHistoryBack("로그인 후 사용해주세요");
+			rq.printReplace("로그인 후 사용해주세요", "/usr/member/showLogin");
 			return false;
 		}
 		return HandlerInterceptor.super.preHandle(request, response, handler);

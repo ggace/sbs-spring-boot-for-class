@@ -13,4 +13,6 @@ public interface LikeDao {
 	public Like getIsLikeArticle(int id, int actorId);
 
 	public int getLikeCount(int id);
+
+	public void doAddArticleLike(int id, int actorId);
 }

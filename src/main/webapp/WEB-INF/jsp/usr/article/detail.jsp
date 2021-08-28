@@ -13,6 +13,11 @@
 				</div>
 				
 				<div class="flex">
+					<p>추천</p>
+					<p class="break-all">${article.extra__goodReactionPoint}</p>
+				</div>
+				
+				<div class="flex">
 					<p>작성날짜</p>
 					<p class="break-all">${article.regDateForPrint}</p>
 				</div>
@@ -32,7 +37,10 @@
 				</div>					
 			</div>
 			<div class="flex">
-				<a href="/usr/article/doArticleLike?id=${article.id }" class="m-1 btn btn-secondary btn-sm ${isLike ? "btn-active" : "btn-outline" }">좋아요 ${likeCount }</a>
+				<c:if test="${!canReact && rq.isLogined()}">
+					<button class="m-1 btn btn-secondary btn-sm ${canReact ? "btn-active" : "btn-outline" } article-detail__like">👍${likeCount }</button>
+				</c:if>
+				
 				<div class="flex-grow"></div>
 				<p class="article-detail__hit-count"></p>
 			</div>
@@ -54,15 +62,4 @@
 			location.replace("/usr/article/list")
 		</script>
 	<%} %>
-	
-	<script>
-	window.onpageshow = function(event) {
-	    if(event.persisted || window.performance && window.performance.navigation.type == 2){
-	        location.reload();
-	    }
-	}
-	
-	
-	
-	</script>
 <%@include file="../common/foot.jspf" %>

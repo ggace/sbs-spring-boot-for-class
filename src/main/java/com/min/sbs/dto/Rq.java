@@ -54,6 +54,11 @@ public class Rq {
 		
 		println(Util.jsHistoryBack(msg));
 	}
+	
+	public void printReplace(String msg, String url) {
+		response.setContentType("text/html; charset=utf-8");
+		println(Util.jsReplace(msg, url));
+	}
 
 	private void println(String msg) {
 		print(msg + "\n");

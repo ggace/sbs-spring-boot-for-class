@@ -30,4 +30,9 @@ public class LikeService {
 		return likeDao.getLikeCount(id);
 	}
 
+	public void doAddArticleLike(int id, int actorId) {
+		// TODO Auto-generated method stub
+		likeDao.doAddArticleLike(id, actorId);
+	}
+
 }

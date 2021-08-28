@@ -8,9 +8,14 @@ public class ResultData<DataType> {
 	@Getter
 	private String msg;
 	@Getter
-	private String dataName;
+	private String data1Name;
 	@Getter
-	private DataType data;
+	private DataType data1;
+	@Getter
+	private String data2Name;
+	@Getter
+	private Object data2;
+	
 
 	private ResultData() {
 		// TODO Auto-generated constructor stub
@@ -28,8 +33,8 @@ public class ResultData<DataType> {
 		ResultData<DataType> resultData = new ResultData<>();
 		resultData.resultCode = resultCode;
 		resultData.msg = msg;
-		resultData.dataName = dataName;
-		resultData.data = data;
+		resultData.data1Name = dataName;
+		resultData.data1 = data;
 
 		return resultData;
 	}
@@ -40,6 +45,11 @@ public class ResultData<DataType> {
 
 	public static <DataType> ResultData<DataType> newData(ResultData rd, String dataName, DataType obj) {
 		return from(rd.resultCode, rd.msg, dataName, obj);
+	}
+	
+	public void setData2(String dataName, Object data) {
+		data2Name = dataName;
+		data2 = data;
 	}
 
 }

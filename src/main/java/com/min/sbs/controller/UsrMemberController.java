@@ -53,7 +53,7 @@ public class UsrMemberController {
 			return (ResultData) joinRd;
 		}
 
-		int id = joinRd.getData();
+		int id = joinRd.getData1();
 
 		Member member = memberService.getMemberById(id);
 

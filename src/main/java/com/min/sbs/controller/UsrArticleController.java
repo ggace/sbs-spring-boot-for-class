@@ -32,24 +32,7 @@ public class UsrArticleController {
 		this.rq = rq;
 	}
 	
-	@RequestMapping("/usr/article/doArticleLike")
-	@ResponseBody
-	public String doArticleLike(Model model, Integer id) {
-		if(id == null) {
-			return Util.jsHistoryBack("id를 입력해주세요");
-		}
-		
-		Like like = likeService.getIsLikeArticle(id, rq.getLoginedMemberId());
-		if(like == null) {
-			likeService.doArticleLike(id, rq.getLoginedMemberId());
-		}
-		else {
-			likeService.doCancelArticleLike(id, rq.getLoginedMemberId());
-		}
-		
-		
-		return Util.jsHistoryBack("");
-	}
+	
 
 	@RequestMapping("/usr/article/search")
 	public String search(Model model, @RequestParam(defaultValue = "") String str, Integer boardId, @RequestParam(defaultValue = "1") int page,
@@ -156,7 +139,7 @@ public class UsrArticleController {
 		return ResultData.from("S-1", Util.format("%s번 게시물입니다.", id), "article", article);
 	}
 	
-	@RequestMapping("/usr/article/increaseHitCount")
+	@RequestMapping("/usr/article/doIncreaseHitCount")
 	@ResponseBody
 	public ResultData increaseHitCount(Integer id) {
 		ResultData doAddHitCountRd = articleService.doAddHitCount(id);
@@ -167,43 +150,46 @@ public class UsrArticleController {
 		
 		return ResultData.newData(doAddHitCountRd, "hitCount", articleService.getArticleHitCount(id));
 	}
-
+	@RequestMapping("/usr/article/getHitCount")
+	@ResponseBody
+	public ResultData getHitCount(Integer id) {
+		if(id == null) {
+			return ResultData.from("F-1", "id를 입력해주세요");
+		}
+		
+		return ResultData.from("S-1", Util.format("%d번 게시물의 조회수 입니다.", id), "hitCount", articleService.getArticleHitCount(id));
+	}
+	
 	@RequestMapping("/usr/article/detail")
 	public String showDetail(Integer id, Model model) {
-
-		if (id == null) {
-			model.addAttribute("errors", "id를 입력해주세요");
-			return "usr/article/detail";
+		if(id == null) {
+			return rq.historyBackJsOnView("id를 입력해주세요");
 		}
-
+		
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
-		
-
-		if (article == null) {
-			model.addAttribute("errors", Util.format("%s번 게시물은 존재하지 않습니다.", id));
-			return "usr/article/detail";
-		}
-		
 		Like like = likeService.getIsLikeArticle(id, rq.getLoginedMemberId());
-		int likeCount = likeService.getLikeCount(id);
 		
+		if(article == null) {
+			return rq.historyBackJsOnView("존재하지 않는 게시물 입니다.");
+		}
+		int likeCount = likeService.getLikeCount(id);
+		model.addAttribute("article", article);
 		if(like == null) {
-			model.addAttribute("isLike", false);
+			model.addAttribute("canReact", false);
+		}else {
+			model.addAttribute("canReact", (like.getPoint() == 0)? false: true);
 		}
-		else {
-			model.addAttribute("isLike", true);
-		}
+		
 		model.addAttribute("likeCount", likeCount);
 		
-		model.addAttribute("article", article);
-		return "usr/article/detail";
+		return "/usr/article/detail";
 	}
-
+	
 	@RequestMapping("/usr/article/write")
 	public String write() {
 		return "usr/article/write";
 	}
-
+	
 	@RequestMapping("/usr/article/doAdd")
 	@ResponseBody
 	public String doAdd(Integer boardId, String title, String body) {
@@ -219,7 +205,7 @@ public class UsrArticleController {
 		}
 
 		ResultData<Integer> addRd = articleService.doAdd(rq.getLoginedMemberId(), boardId, title, body);
-		int id = addRd.getData();
+		int id = addRd.getData1();
 
 		return Util.jsReplace(addRd.getMsg(), "/usr/home/main");
 	}

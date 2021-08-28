@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Like {
+	int id;
 	private int memberId;
-	private int articleId;
+	private int relId;
+	private String relTypeCode;
+	private int point;
+	private String regDate;
+	private String updateDate;
 }

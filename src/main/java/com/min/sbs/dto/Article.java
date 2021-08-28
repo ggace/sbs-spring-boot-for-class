@@ -14,6 +14,9 @@ public class Article {
 	private int memberId;
 	private String title;
 	private String body;
+	private int extra__sumReactionPoint;
+	private int extra__goodReactionPoint;
+	private int extra__badReactionPoint;
 	
 	
 	private String extra__writerName;
