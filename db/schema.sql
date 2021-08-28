@@ -86,8 +86,7 @@ CREATE TABLE article (
     boardId INT(10) UNSIGNED NOT NULL,
     title CHAR(100) NOT NULL,
     `body` TEXT NOT NULL,
-    `like` INT(10) UNSIGNED DEFAULT 0,
-    whoLike TEXT DEFAULT '',
+    `hitCount` int(10) unsigned default 0,
     
     FOREIGN KEY(memberId) REFERENCES `member`(id),
     FOREIGN KEY(boardId) REFERENCES `board`(id)
@@ -118,4 +117,28 @@ boardId = 2,
 title = '제목 3',
 `body` = '내용 3';
 
+create table `like`(
+    memberId int(10) unsigned not null,
+    articleId int(10) UNSIGNED not null,
+    
+    FOREIGN KEY(memberId) REFERENCES `member`(id),
+    FOREIGN KEY(articleId) REFERENCES `article`(id)
+);
+
 SELECT * FROM article
+select * from `like`
+select * from member
+
+select hitCount
+from article
+where id=1
+
+select * from article where id=218
+
+
+insert into article
+(
+    regDate, updateDate, memberId, boardId, title, `body`
+)
+select now(), now(), FLOOR(RAND() * 2) + 1, FLOOR(RAND() * 2) + 1, concat('제목_', rand()), CONCAT('내용_', RAND())
+from article;
