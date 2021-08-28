@@ -155,6 +155,18 @@ public class UsrArticleController {
 
 		return ResultData.from("S-1", Util.format("%s번 게시물입니다.", id), "article", article);
 	}
+	
+	@RequestMapping("/usr/article/increaseHitCount")
+	@ResponseBody
+	public ResultData increaseHitCount(Integer id) {
+		ResultData doAddHitCountRd = articleService.doAddHitCount(id);
+		
+		if(doAddHitCountRd.isFail()) {
+			return doAddHitCountRd;
+		}
+		
+		return ResultData.newData(doAddHitCountRd, "hitCount", articleService.getArticleHitCount(id));
+	}
 
 	@RequestMapping("/usr/article/detail")
 	public String showDetail(Integer id, Model model) {
@@ -165,7 +177,7 @@ public class UsrArticleController {
 		}
 
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
-		articleService.doAddHitCount(id);
+		
 
 		if (article == null) {
 			model.addAttribute("errors", Util.format("%s번 게시물은 존재하지 않습니다.", id));

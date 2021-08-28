@@ -141,8 +141,13 @@
 	<update id="doAddHitCount">
 		UPDATE article
 		SET hitCount = hitCount + 1
+		WHERE id=#{id}
 	</update>
 	
-	
+	<select id="getArticleHitCount" resultType="int">
+		SELECT hitCount
+		FROM article
+		WHERE id=#{id}
+	</select>
 
 </mapper>

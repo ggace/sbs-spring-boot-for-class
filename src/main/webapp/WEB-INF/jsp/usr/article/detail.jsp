@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="${article.id}번 상세 페이지" />
 <%@include file="../common/header.jspf" %>
-
+	
 	<section class="mt-5">
 		<div class="flex container mx-auto flex-col">
 			<div class="flex div-table-type-1 flex-col">
@@ -34,7 +34,7 @@
 			<div class="flex">
 				<a href="/usr/article/doArticleLike?id=${article.id }" class="m-1 btn btn-secondary btn-sm ${isLike ? "btn-active" : "btn-outline" }">좋아요 ${likeCount }</a>
 				<div class="flex-grow"></div>
-				<p>조회수 ${article.hitCount }</p>
+				<p class="article-detail__hit-count"></p>
 			</div>
 			<div class="flex mt-1">
 				<button class="btn btn-link btn-sm" onclick="history.back()">뒤로가기</button>
@@ -61,5 +61,8 @@
 	        location.reload();
 	    }
 	}
+	
+	
+	
 	</script>
 <%@include file="../common/foot.jspf" %>

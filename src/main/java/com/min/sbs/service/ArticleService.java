@@ -132,8 +132,22 @@ public class ArticleService {
 		return articleDao.getArticlesCountAfterSearching(boardId, str, type);
 	}
 
-	public void doAddHitCount(int id) {
-		articleDao.doAddHitCount(id);
+	public ResultData doAddHitCount(Integer id) {
+		if(id == null) {
+			return ResultData.from("F-1", "id를 입력해주세요");
+		}
+		
+		int affectedRowsCount = articleDao.doAddHitCount(id);
+		
+		if(affectedRowsCount != 1) {
+			return ResultData.from("F-a", Util.format("%d번 게시물의 조회수가 증가하지 못했습니다.", id));
+		}
+		
+		return ResultData.from("S-1", Util.format("%d번 게시물의 조회수가 증가하였습니다.", id),"data", affectedRowsCount);
+	}
+
+	public int getArticleHitCount(int id) {
+		return articleDao.getArticleHitCount(id);
 	}
 
 	
