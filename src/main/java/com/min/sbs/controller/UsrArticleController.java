@@ -10,25 +10,26 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.min.sbs.dto.Article;
 import com.min.sbs.dto.Board;
-import com.min.sbs.dto.Like;
+import com.min.sbs.dto.ReactionPoint;
 import com.min.sbs.dto.ResultData;
 import com.min.sbs.dto.Rq;
 import com.min.sbs.service.ArticleService;
 import com.min.sbs.service.BoardService;
-import com.min.sbs.service.LikeService;
+import com.min.sbs.service.ReactionPointService;
 import com.min.sbs.util.Util;
 
 @Controller
 public class UsrArticleController {
 	private ArticleService articleService;
 	private BoardService boardService;
-	private LikeService likeService; 
+	private ReactionPointService reactionPointService;
+	 
 	private Rq rq;
 
-	public UsrArticleController(ArticleService articleService, BoardService boardService, LikeService likeService, Rq rq) {
+	public UsrArticleController(ArticleService articleService, BoardService boardService, ReactionPointService reactionPointService, Rq rq) {
 		this.articleService = articleService;
 		this.boardService = boardService;
-		this.likeService = likeService;
+		this.reactionPointService = reactionPointService;
 		this.rq = rq;
 	}
 	
@@ -130,7 +131,7 @@ public class UsrArticleController {
 			return ResultData.from("F-A", "id를 입력해주세요");
 		}
 
-		Article article = articleService.getArticle(id);
+		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 
 		if (article == null) {
 			return ResultData.from("F-1", Util.format("%s번 게시물은 존재하지 않습니다.", id));
@@ -160,6 +161,9 @@ public class UsrArticleController {
 		return ResultData.from("S-1", Util.format("%d번 게시물의 조회수 입니다.", id), "hitCount", articleService.getArticleHitCount(id));
 	}
 	
+	
+	
+	
 	@RequestMapping("/usr/article/detail")
 	public String showDetail(Integer id, Model model) {
 		if(id == null) {
@@ -167,18 +171,23 @@ public class UsrArticleController {
 		}
 		
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
-		Like like = likeService.getIsLikeArticle(id, rq.getLoginedMemberId());
+		int sumReactionPoint = reactionPointService.getSumReactionPointByMemberId(id, rq.getLoginedMemberId());
+		
+		
 		
 		if(article == null) {
 			return rq.historyBackJsOnView("존재하지 않는 게시물 입니다.");
 		}
-		int likeCount = likeService.getLikeCount(id);
+		
+		
+		
+		int likeCount = reactionPointService.getLikeCount(id);
 		model.addAttribute("article", article);
-		if(like == null) {
-			model.addAttribute("canReact", false);
-		}else {
-			model.addAttribute("canReact", (like.getPoint() == 0)? false: true);
-		}
+		
+		model.addAttribute("isGoodReact", sumReactionPoint == 1 ? true : false);
+		model.addAttribute("isbadReact", sumReactionPoint == -1 ? true : false);
+		
+		
 		
 		model.addAttribute("likeCount", likeCount);
 		

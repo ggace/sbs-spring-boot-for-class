@@ -61,7 +61,7 @@
 			
 			
 			<div class="mt-3">
-				<table class="table table-fixed w-full ">
+				<table class="table w-full ">
 					<colgroup>
 						<col width="50"/>
 						<col width="150"/>
@@ -90,7 +90,7 @@
 								<td>${article.regDateForPrint }</td>
 								<td>${article.updateDateForPrint }</td>
 								<td>${article.extra__writerName }</td>
-								<td>${article.extra__goodReactionPoint }</td>
+								<td>${article.goodReactionPoint }</td>
 								<td>
 									<a class="btn-text-link block w-full truncate" href="/usr/article/detail?id=${article.id }">
 										${article.title }
@@ -142,6 +142,14 @@
 		location.replace('/usr/article/list?boardId=${boardId}&page=${currentPage}&limit=' + value)
 	}
 </script>
+
+<script>
+	window.onpageshow = function(event) {
+		if ( event.persisted || (window.performance && window.performance.navigation.type == 2)) {
+			location.reload();
+		}
+	}
+	</script>
 	
 	
 <%@include file="../common/foot.jspf" %>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.min.sbs.dao.ReactionPointDao">
+	
+	<insert id="doAddArticleLike">
+		INSERT INTO reactionPoint
+		SET relId = #{id},
+		relTypeCode = "article",
+		`point` = 1,
+		regDate = NOW(),
+		updateDate = NOW(),
+		memberId = #{actorId}
+		
+	</insert>
+	
+	<insert id="doAddArticleDisLike">
+		INSERT INTO reactionPoint
+		SET relId = #{id},
+		relTypeCode = "article",
+		`point` = -1,
+		regDate = NOW(),
+		updateDate = NOW(),
+		memberId = #{actorId}
+	</insert>
+	
+	<update id="doUpdateArticleLike">
+		UPDATE reactionPoint
+		SET `point` = 1,
+		updateDate = NOW()
+		WHERE relId=#{id}
+		AND memberId=#{actorId}
+	</update>
+	
+	<update id="doUpdateArticleDisLike">
+		UPDATE reactionPoint
+		SET `point` = -1,
+		updateDate = NOW()
+		WHERE relId=#{id}
+		AND memberId=#{actorId}
+	</update>
+	
+	<delete id="doCancelArticleLike">
+		DELETE FROM reactionPoint
+		WHERE relTypeCode = "article" 
+		AND memberId = #{actorId}
+		AND relId = #{id}
+	</delete>
+	
+	<select id="getSumReactionPointByMemberId" resultType="int">
+		SELECT IFNULL(SUM(RP.point), 0) AS s
+		FROM reactionPoint AS RP
+		WHERE RP.relTypeCode = 'article'
+		AND RP.relId = #{id}
+		AND RP.memberId = #{actorId}
+	</select>
+	
+	<select id="getLikeCount" resultType="int">
+		SELECT IFNULL(SUM(`point`), 0) AS cnt
+		FROM reactionPoint
+		WHERE relId = #{id}
+	</select>
+	
+	<update id="updateArticleReactionPointInit">
+		UPDATE article
+		SET goodReactionPoint = 0,
+		badReactionPoint = 0
+	</update>
+	
+	<update id="updateArticleReactionPoint">
+		UPDATE article AS A
+		INNER JOIN (
+		    SELECT RP.relId,
+		    SUM(IF(RP.point &gt; 0, RP.point, 0)) AS goodReactionPoint,
+		    SUM(IF(RP.point &lt; 0, RP.point * -1, 0)) AS badReactionPoint
+		    FROM reactionPoint AS RP
+		    WHERE relTypeCode = 'article'
+		    GROUP BY RP.relTypeCode, RP.relId
+		) AS RP_SUM
+		ON A.id = RP_SUM.relId
+		SET A.goodReactionPoint = RP_SUM.goodReactionPoint,
+		A.badReactionPoint = RP_SUM.badReactionPoint;
+	</update>
+	
+
+</mapper>

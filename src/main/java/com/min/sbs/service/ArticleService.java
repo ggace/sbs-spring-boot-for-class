@@ -43,7 +43,7 @@ public class ArticleService {
 		
 		return article;
 	}
-
+	
 	private void updateForPrintData(int actorId, Article article) {
 		if(article == null) {
 			return;

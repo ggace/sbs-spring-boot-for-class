@@ -21,6 +21,8 @@ public interface ArticleDao {
 	public Article getArticle(@Param("id") int id);
 	
 	public Article getForPrintArticle(@Param("id") int id);
+	
+	
 
 	public int getLastArticleId();
 
@@ -43,6 +45,8 @@ public interface ArticleDao {
 	public int doAddHitCount(int id);
 
 	public int getArticleHitCount(int id);
+
+	
 
 	
 

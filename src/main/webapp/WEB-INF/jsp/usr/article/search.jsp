@@ -67,6 +67,7 @@
 						<col width="150"/>
 						<col width="150"/>
 						<col width="150"/>
+						<col width="50"/>
 						<col />
 					</colgroup>
 					
@@ -77,6 +78,7 @@
 							<th>작성날짜</th>
 							<th>수정날짜</th>
 							<th>작성자</th>
+							<th>추천</th>
 							<th>제목</th>
 						</tr>
 					</thread>
@@ -84,10 +86,11 @@
 					<tbody>
 						<c:forEach var="article" items="${articles}">
 							<tr>
-								<td>${article.id }</td>
+								<th>${article.id }</td>
 								<td>${article.regDateForPrint }</td>
 								<td>${article.updateDateForPrint }</td>
 								<td>${article.extra__writerName }</td>
+								<td>${article.goodReactionPoint }</td>
 								<td>
 									<a class="btn-text-link block w-full truncate" href="/usr/article/detail?id=${article.id }">
 										${article.title }

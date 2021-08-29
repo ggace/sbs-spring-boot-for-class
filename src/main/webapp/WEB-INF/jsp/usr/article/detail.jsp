@@ -14,7 +14,7 @@
 				
 				<div class="flex">
 					<p>추천</p>
-					<p class="break-all">${article.extra__goodReactionPoint}</p>
+					<p class="break-all">${article.goodReactionPoint}</p>
 				</div>
 				
 				<div class="flex">
@@ -37,8 +37,9 @@
 				</div>					
 			</div>
 			<div class="flex">
-				<c:if test="${!canReact && rq.isLogined()}">
-					<button class="m-1 btn btn-secondary btn-sm ${canReact ? "btn-active" : "btn-outline" } article-detail__like">👍${likeCount }</button>
+				<c:if test="${rq.isLogined() }">
+					<a onclick="doChangeLike('good')" class="good m-1 btn btn-primary btn-sm ${isGoodReact ? "btn-active" : "btn-outline" } article-detail__like">👍 <span class="mx-1" id="goodCount">${article.goodReactionPoint }</span></a>
+					<a onclick="doChangeLike('bad')" class="bad m-1 btn btn-secondary btn-sm ${isbadReact ? "btn-active" : "btn-outline" } article-detail__like">👎 <span class="mx-1" id="badCount">${article.badReactionPoint }</span></a>
 				</c:if>
 				
 				<div class="flex-grow"></div>
@@ -62,4 +63,86 @@
 			location.replace("/usr/article/list")
 		</script>
 	<%} %>
+	
+	<script type="text/javascript">
+		var isGoodReact = ${isGoodReact ? isGoodReact: false};
+		var isBadReact = ${isbadReact ? isbadReact : false};
+		
+		var doChangeLike =  function (from){
+			
+			if(from == "good"){
+				if(isGoodReact){
+					doAjaxToChangeLike("cancel");
+				}
+				else{
+					doAjaxToChangeLike("like");
+				}
+			}
+			else if(from == "bad"){
+				if(isBadReact){
+					doAjaxToChangeLike("cancel");
+				}
+				else{
+					doAjaxToChangeLike("hate");
+				}
+			}
+			
+		}
+		
+		var doAjaxToChangeLike = function doAjaxToChangeLike(type){
+			$.get("/usr/reaction/doChangeLike",{
+		      	id: getParam("id"),
+		      	type: type, 
+			    ajaxMode: "Y"
+			}, function(data){
+				if(data.data1 == 1){
+			    	$(".good").removeClass("btn-outline")
+			    	$(".bad").removeClass("btn-active")
+			    	$(".good").addClass("btn-active")
+			    	$(".bad").addClass("btn-outline")
+			    	isGoodReact = true;
+			    	isBadReact = false;
+			    }
+			    else if(data.data1 == -1){
+			    	$(".good").removeClass("btn-active")
+			    	$(".bad").removeClass("btn-outline")
+			    	$(".good").addClass("btn-outline")
+			    	$(".bad").addClass("btn-active")
+			    	isGoodReact = false;
+			    	isBadReact = true;
+			    }
+			    else{
+			    	$(".good").removeClass("btn-active")
+			    	$(".bad").removeClass("btn-active")
+			    	$(".good").addClass("btn-outline")
+			    	$(".bad").addClass("btn-outline")
+			    	isGoodReact = false;
+			    	isBadReact = false;
+			    }
+				
+				getReact();
+			    
+			}, 'json');
+		}
+		
+		function getReact(){
+			$.get("/usr/article/getArticle", {
+				id: getParam("id"),
+			    ajaxMode: "Y"
+			}, function(data){
+				$("#goodCount").text(data.data1.goodReactionPoint);
+				$("#badCount").text(data.data1.badReactionPoint);
+			})
+		}
+		
+		
+	</script>
+	
+	<script>
+	window.onpageshow = function(event) {
+		if ( event.persisted || (window.performance && window.performance.navigation.type == 2)) {
+			location.reload();
+		}
+	}
+	</script>
 <%@include file="../common/foot.jspf" %>

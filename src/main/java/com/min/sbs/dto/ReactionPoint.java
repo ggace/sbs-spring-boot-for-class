@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Like {
+public class ReactionPoint {
 	int id;
 	private int memberId;
 	private int relId;

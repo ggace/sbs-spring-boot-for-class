@@ -30,12 +30,13 @@
 <body>
 	
 	
-	<header class="flex h-20 container  mx-auto">
-		<a class="flex items-center px-3" href="/">로고</a>
+	<header class="flex h-20 container items-center  mx-auto">
+		
+		<img src="/img/logo.png" class="h-16  px-3" alt="" />
 		
 		<div class="flex-grow"></div>
 		
-		<ul class="flex nav">
+		<ul class="flex nav  h-full">
 			<li>
 				<a class="h-full flex px-3 items-center hover:underline" href="/">홈</a>
 			</li>
