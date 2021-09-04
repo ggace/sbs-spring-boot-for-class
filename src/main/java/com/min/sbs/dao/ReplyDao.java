@@ -2,6 +2,7 @@ package com.min.sbs.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -35,5 +36,14 @@ public interface ReplyDao {
 			</script>
 			""")
 	void doWriteReply(int memberId, int articleId, String body);
+
+	@Delete("""
+			<script>
+				DELETE FROM reply
+				WHERE memberId = #{memberId}
+				AND id = #{id}
+			</script>
+			""")
+	void doDeleteReply(int memberId, Integer id);
 
 }

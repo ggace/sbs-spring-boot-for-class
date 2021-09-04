@@ -5,7 +5,7 @@
 	<insert id="doAddArticleLike">
 		INSERT INTO reactionPoint
 		SET relId = #{id},
-		relTypeCode = "article",
+		relTypeCode = #{relTypeCode},
 		`point` = 1,
 		regDate = NOW(),
 		updateDate = NOW(),
@@ -16,7 +16,7 @@
 	<insert id="doAddArticleDisLike">
 		INSERT INTO reactionPoint
 		SET relId = #{id},
-		relTypeCode = "article",
+		relTypeCode = #{relTypeCode},
 		`point` = -1,
 		regDate = NOW(),
 		updateDate = NOW(),
@@ -41,7 +41,7 @@
 	
 	<delete id="doCancelArticleLike">
 		DELETE FROM reactionPoint
-		WHERE relTypeCode = "article" 
+		WHERE relTypeCode = #{relTypeCode}
 		AND memberId = #{actorId}
 		AND relId = #{id}
 	</delete>
@@ -49,7 +49,7 @@
 	<select id="getSumReactionPointByMemberId" resultType="int">
 		SELECT IFNULL(SUM(RP.point), 0) AS s
 		FROM reactionPoint AS RP
-		WHERE RP.relTypeCode = 'article'
+		WHERE RP.relTypeCode = #{relTypeCode}
 		AND RP.relId = #{id}
 		AND RP.memberId = #{actorId}
 	</select>

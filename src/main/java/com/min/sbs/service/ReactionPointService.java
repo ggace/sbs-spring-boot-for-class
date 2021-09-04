@@ -14,28 +14,28 @@ public class ReactionPointService {
 		this.reactionPointDao = likeDao;
 	}
 	
-	public void doArticleLike(int id, int actorId) {
-		reactionPointDao.doArticleLike(id, actorId);
+	public void doArticleLike(int id, int actorId, String relTypeCode) {
+		reactionPointDao.doArticleLike(id, actorId, relTypeCode);
 	}
 
-	public void doCancelArticleLike(int id, int actorId) {
-		reactionPointDao.doCancelArticleLike(id, actorId);
+	public void doCancelArticleLike(int id, int actorId, String relTypeCode) {
+		reactionPointDao.doCancelArticleLike(id, actorId, relTypeCode);
 	}
 
-	public int getSumReactionPointByMemberId(int id, int actorId) {
-		return reactionPointDao.getSumReactionPointByMemberId(id, actorId);
+	public int getSumReactionPointByMemberId(int id, int actorId, String relTypeCode) {
+		return reactionPointDao.getSumReactionPointByMemberId(id, actorId, relTypeCode);
 	}
 
 	public int getLikeCount(int id) {
 		return reactionPointDao.getLikeCount(id);
 	}
 
-	public void doAddArticleLike(int id, int actorId) {
-		reactionPointDao.doAddArticleLike(id, actorId);
+	public void doAddArticleLike(int id, int actorId, String relTypeCode) {
+		reactionPointDao.doAddArticleLike(id, actorId, relTypeCode);
 	}
 
-	public void doAddArticleDisLike(int id, int actorId) {
-		reactionPointDao.doAddArticleDisLike(id, actorId);
+	public void doAddArticleDisLike(int id, int actorId, String relTypeCode) {
+		reactionPointDao.doAddArticleDisLike(id, actorId, relTypeCode);
 	}
 
 	public void doUpdateArticleDisLike(int id, int actorId) {

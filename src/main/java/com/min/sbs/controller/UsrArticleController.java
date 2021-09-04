@@ -171,7 +171,7 @@ public class UsrArticleController {
 		}
 		
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
-		int sumReactionPoint = reactionPointService.getSumReactionPointByMemberId(id, rq.getLoginedMemberId());
+		int sumReactionPoint = reactionPointService.getSumReactionPointByMemberId(id, rq.getLoginedMemberId(), "article");
 		
 		
 		

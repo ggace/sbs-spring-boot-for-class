@@ -15,6 +15,7 @@ public class Reply {
 	private int articleId; 
 	private String title;
 	private String body;
+	private boolean extra__actorCanDelete;
 	
 	private String extra__memberName;
 	

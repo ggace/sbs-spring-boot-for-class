@@ -24,7 +24,7 @@ public class ReplyController {
 		if(articleId == null) {
 			return ResultData.from("F-1", "articleId를 입력해주세요");
 		}
-		return replyService.getReplies(articleId);
+		return replyService.getReplies(rq.getLoginedMemberId(), articleId);
 	}
 	
 	@RequestMapping("/usr/reply/doWriteReply")
@@ -40,7 +40,21 @@ public class ReplyController {
 		
 		replyService.doWriteReply(rq.getLoginedMemberId(), articleId, body);
 		
-		return replyService.getReplies(articleId);
+		return replyService.getReplies(rq.getLoginedMemberId() ,articleId);
+	}
+	
+	@RequestMapping("/usr/reply/doDeleteReply")
+	@ResponseBody
+	public ResultData doDeleteReply(Integer articleId, Integer id) {
+		if(articleId == null) {
+			return ResultData.from("F-1", "articleId를 입력해주세요");
+		}
+		if(id == null) {
+			return ResultData.from("F-2", "id를 입력해주세요");
+		}
+		replyService.doDeleteReply(rq.getLoginedMemberId(), id);
+		
+		return replyService.getReplies(rq.getLoginedMemberId(), articleId);
 	}
 }
 ;

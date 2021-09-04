@@ -60,9 +60,9 @@
 					
 						<button v-on:click="writeReply" type="button" class="btn btn-primary btn-sm btn-outline"/>댓글 작성</button>
 					</div>
-					<div v-for="reply in replies" class="px-3">
-						<p>{{reply.extra__memberName}}({{reply.updateDate.substring(2,16)}})  :  {{reply.body}}</p>
-						
+					<div v-for="reply in replies" class="px-3 flex">
+						<p class="px-3">{{reply.extra__memberName}}({{reply.updateDate.substring(2,16)}})  :  {{reply.body}}</p>
+						<button class="text-red-500" v-on:click="deleteReply(reply.id)" v-if="reply.extra__actorCanDelete">삭제</button>
 					</div>
 					
 					
@@ -89,6 +89,23 @@
 				replies : null
 			},
 			methods: {
+				deleteReply : function(id){
+					let url = '/usr/reply/doDeleteReply?articleId=${article.id}&id=' + id;
+					fetch(url)
+					.then((response) =>{
+						cloneResponse = response
+						if(cloneResponse.ok){
+							return cloneResponse.json();
+						}
+						throw new Error("Network reponse was not ok");
+					})
+					.then((json) =>{
+						this.replies = json.data1;
+					})
+					.catch((error) =>{
+						console.log(error);
+					});
+				},
 				writeReply : function(){
 					let url = '/usr/reply/doWriteReply?articleId=${article.id}&body=' + $("#replyInputFrom").val()
 					fetch(url)
@@ -136,27 +153,28 @@
 			
 			if(from == "good"){
 				if(isGoodReact){
-					doAjaxToChangeLike("cancel");
+					doAjaxToChangeLike(getParam("id"), "cancel", "article");
 				}
 				else{
-					doAjaxToChangeLike("like");
+					doAjaxToChangeLike(getParam("id"), "like", "article");
 				}
 			}
 			else if(from == "bad"){
 				if(isBadReact){
-					doAjaxToChangeLike("cancel");
+					doAjaxToChangeLike(getParam("id"), "cancel", "article");
 				}
 				else{
-					doAjaxToChangeLike("hate");
+					doAjaxToChangeLike(getParam("id"), "hate", "article");
 				}
 			}
 			
 		}
 		
-		var doAjaxToChangeLike = function doAjaxToChangeLike(type){
+		var doAjaxToChangeLike = function doAjaxToChangeLike(id, type, relTypeCode){
 			$.get("/usr/reaction/doChangeLike",{
-		      	id: getParam("id"),
+		      	id: id,
 		      	type: type, 
+		      	relTypeCode : relTypeCode,
 			    ajaxMode: "Y"
 			}, function(data){
 				if(data.data1 == 1){

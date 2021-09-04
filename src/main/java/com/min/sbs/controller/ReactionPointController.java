@@ -21,18 +21,18 @@ public class ReactionPointController {
 	
 	@RequestMapping("/usr/reaction/doChangeLike")
 	@ResponseBody
-	public ResultData doChageLike(int id, String type) {
+	public ResultData doChageLike(int id, String type, String relTypeCode) {
 		
-		int sumReactionPointByMemberId = reactionPointService.getSumReactionPointByMemberId(id, rq.getLoginedMemberId());
+		int sumReactionPointByMemberId = reactionPointService.getSumReactionPointByMemberId(id, rq.getLoginedMemberId(), relTypeCode);
 		if(sumReactionPointByMemberId == 0) {
 			if(type.equals("hate")) {
-				reactionPointService.doAddArticleDisLike(id, rq.getLoginedMemberId());
+				reactionPointService.doAddArticleDisLike(id, rq.getLoginedMemberId(), relTypeCode);
 			}
 			else if(type.equals("like")) {
-				reactionPointService.doAddArticleLike(id, rq.getLoginedMemberId());
+				reactionPointService.doAddArticleLike(id, rq.getLoginedMemberId(), relTypeCode);
 			}
 			else {
-				reactionPointService.doCancelArticleLike(id, rq.getLoginedMemberId());
+				reactionPointService.doCancelArticleLike(id, rq.getLoginedMemberId(), relTypeCode);
 			}
 		}
 		else {
@@ -43,12 +43,12 @@ public class ReactionPointController {
 				reactionPointService.doUpdateArticleLike(id, rq.getLoginedMemberId());
 			}
 			else {
-				reactionPointService.doCancelArticleLike(id, rq.getLoginedMemberId());
+				reactionPointService.doCancelArticleLike(id, rq.getLoginedMemberId(), relTypeCode);
 			}
 		}
 		reactionPointService.updateArticleReactionPoint();
 		
-		sumReactionPointByMemberId = reactionPointService.getSumReactionPointByMemberId(id, rq.getLoginedMemberId());
+		sumReactionPointByMemberId = reactionPointService.getSumReactionPointByMemberId(id, rq.getLoginedMemberId(), relTypeCode);
 		
 		return ResultData.from("S-1", "좋아요 싫어요 변경됨", "sumReactionPointByMemberId", sumReactionPointByMemberId);
 	}
