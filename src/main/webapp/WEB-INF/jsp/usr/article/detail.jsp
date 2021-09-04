@@ -46,12 +46,29 @@
 				<p class="article-detail__hit-count"></p>
 			</div>
 			<div class="flex mt-1">
-				<button class="btn btn-link btn-sm" onclick="history.back()">뒤로가기</button>
+				
 				<div class="flex flex-grow"></div>
 				<c:if test="${article.extra__actorCanDelete }">
 					<a class="btn btn-ghost btn-outline btn-sm m-1" href="/usr/article/modify?id=${article.id }">수정</a>
 					<a onclick="if ( confirm('정말 삭제하시겠습니까?') == false ) return false;" class="btn btn-secondary btn-sm m-1 " href="/usr/article/doDelete?id=${article.id }">삭제</a>
 				</c:if>
+			</div>
+			<div id="replies">
+					<p>댓글</p>
+					<div>
+						<input id="replyInputFrom" type="text" class="input input-bordered input-sm"/>
+					
+						<button v-on:click="writeReply" type="button" class="btn btn-primary btn-sm btn-outline"/>댓글 작성</button>
+					</div>
+					<div v-for="reply in replies" class="px-3">
+						<p>{{reply.extra__memberName}}({{reply.updateDate.substring(2,16)}})  :  {{reply.body}}</p>
+						
+					</div>
+					
+					
+			</div>
+			<div>
+				<button class="btn btn-link btn-sm" onclick="history.back()">뒤로가기</button>
 			</div>
 		</div>
 		
@@ -63,6 +80,53 @@
 			location.replace("/usr/article/list")
 		</script>
 	<%} %>
+	
+	<script defer="defer">
+		
+		let app = new Vue({
+			el: "#replies",
+			data: {
+				replies : null
+			},
+			methods: {
+				writeReply : function(){
+					let url = '/usr/reply/doWriteReply?articleId=${article.id}&body=' + $("#replyInputFrom").val()
+					fetch(url)
+					.then((response) =>{
+						cloneResponse = response
+						if(cloneResponse.ok){
+							return cloneResponse.json();
+						}
+						throw new Error("Network reponse was not ok");
+					})
+					.then((json) =>{
+						this.replies = json.data1;
+					})
+					.catch((error) =>{
+						console.log(error);
+					});
+					$("#replyInputFrom").val("")
+				}
+			},
+			created() {
+				fetch('/usr/reply/getReplies?articleId=${article.id}')
+				.then((response) =>{
+					cloneResponse = response
+					if(cloneResponse.ok){
+						return cloneResponse.json();
+					}
+					throw new Error("Network reponse was not ok");
+				})
+				.then((json) =>{
+					this.replies = json.data1;
+				})
+				.catch((error) =>{
+					console.log(error);
+				});
+			}
+			
+		})
+	</script>
 	
 	<script type="text/javascript">
 		var isGoodReact = ${isGoodReact ? isGoodReact: false};

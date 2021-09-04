@@ -20,11 +20,14 @@
 
 <!-- 폰트어썸 불러오기 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+<!-- vue -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
 
 <!-- 사이트 공통 CSS -->
 <link rel="stylesheet" href="/resources/common.css" />
 <!-- 사이트 공통 JS -->
 <script src="/resources/common.js" defer="defer"></script>
+
 
 </head>
 <body>
