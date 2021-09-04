@@ -30,7 +30,11 @@ public class ReplyService {
 			updateForPrintData(memberId, reply);
 		}
 		
-		return ResultData.from("S-1", "reply리스트입니다.", "replies", replies);
+		ResultData rd =ResultData.from("S-1", "reply리스트입니다.", "replies", replies);
+		
+		rd.setData2("count", replyDao.getCountOfReplies(articleId));
+		
+		return rd;
 	}
 	
 	private void updateForPrintData(int actorId, Reply reply) {

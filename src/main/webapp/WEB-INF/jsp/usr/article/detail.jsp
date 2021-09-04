@@ -54,7 +54,7 @@
 				</c:if>
 			</div>
 			<div id="replies">
-					<p>댓글</p>
+					<p>댓글 {{count}}</p>
 					<div>
 						<input id="replyInputFrom" type="text" class="input input-bordered input-sm"/>
 					
@@ -86,7 +86,8 @@
 		let app = new Vue({
 			el: "#replies",
 			data: {
-				replies : null
+				replies : null,
+				count : 0
 			},
 			methods: {
 				deleteReply : function(id){
@@ -101,6 +102,7 @@
 					})
 					.then((json) =>{
 						this.replies = json.data1;
+						this.count = json.data2;
 					})
 					.catch((error) =>{
 						console.log(error);
@@ -118,6 +120,7 @@
 					})
 					.then((json) =>{
 						this.replies = json.data1;
+						this.count = json.data2;
 					})
 					.catch((error) =>{
 						console.log(error);
@@ -136,6 +139,7 @@
 				})
 				.then((json) =>{
 					this.replies = json.data1;
+					this.count = json.data2;
 				})
 				.catch((error) =>{
 					console.log(error);

@@ -46,4 +46,11 @@ public interface ReplyDao {
 			""")
 	void doDeleteReply(int memberId, Integer id);
 
+	@Select("""
+			SELECT IFNULL(COUNT(*), 0)
+			FROM reply
+			WHERE articleId = #{articleId}
+			""")
+	Object getCountOfReplies(int articleId);
+
 }
