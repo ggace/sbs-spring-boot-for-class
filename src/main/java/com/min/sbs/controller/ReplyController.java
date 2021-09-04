@@ -56,5 +56,24 @@ public class ReplyController {
 		
 		return replyService.getReplies(rq.getLoginedMemberId(), articleId);
 	}
+	
+	@RequestMapping("/usr/reply/doModifyReply")
+	@ResponseBody
+	public ResultData doModifyReply(Integer id, Integer articleId, String body) {
+		if(id == null) {
+			return ResultData.from("F-2", "id를 입력해주세요");
+		}
+		if(articleId == null) {
+			return ResultData.from("F-1", "articleId를 입력해주세요");
+		}
+		
+		if(Util.isEmpty(body)) {
+			return ResultData.from("F-2", "body를 입력해주세요");
+		}
+		
+		replyService.doModifyReply(rq.getLoginedMemberId(), id, articleId, body);
+		
+		return replyService.getReplies(rq.getLoginedMemberId(), articleId);
+	}
 }
 ;

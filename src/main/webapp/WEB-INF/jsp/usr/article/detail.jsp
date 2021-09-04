@@ -61,10 +61,11 @@
 						<button v-on:click="writeReply" type="button" class="btn btn-primary btn-sm btn-outline"/>댓글 작성</button>
 					</div>
 					<div v-for="reply in replies" class="px-3 flex">
-						<p class="px-3">{{reply.extra__memberName}}({{reply.updateDate.substring(2,16)}})  :  {{reply.body}}</p>
-						<button class="text-red-500" v-on:click="deleteReply(reply.id)" v-if="reply.extra__actorCanDelete">삭제</button>
+						<p v-bind:id="'reply' + reply.id" class="px-3 inline">{{reply.extra__memberName}}({{reply.updateDate.substring(2,16)}})  :  {{reply.body}}</p>
+						<p v-bind:id="'modifyBody' + reply.id" class="hidden" >{{reply.extra__memberName}}({{reply.updateDate.substring(2,16)}})  :  <input class="px-3 input input-bordered input-xs" v-bind:value="reply.body" /></p>
+						<button class="btn btn-xs btn-outline mx-1" v-on:click="modifyReply(reply.id)" v-if="reply.extra__actorCanDelete">수정</button>
+						<button class="btn btn-xs btn-secondary mx-1" v-on:click="deleteReply(reply.id)" v-if="reply.extra__actorCanDelete">삭제</button>
 					</div>
-					
 					
 			</div>
 			<div>
@@ -87,11 +88,13 @@
 			el: "#replies",
 			data: {
 				replies : null,
-				count : 0
+				count : 0,
+				isModify: false
 			},
 			methods: {
-				deleteReply : function(id){
-					let url = '/usr/reply/doDeleteReply?articleId=${article.id}&id=' + id;
+				
+				getReplies : function(url){
+					
 					fetch(url)
 					.then((response) =>{
 						cloneResponse = response
@@ -103,47 +106,63 @@
 					.then((json) =>{
 						this.replies = json.data1;
 						this.count = json.data2;
+						if(!json.resultCode.startsWith("S-") && json.resultCode != "F-a"){
+							alert(json.msg);
+						}
 					})
 					.catch((error) =>{
 						console.log(error);
 					});
 				},
+				checkLogined : function(){
+					<c:if test="${!rq.isLogined() }">
+							alert("로그인후 사용해주세요");
+							return false;
+					</c:if>
+				},
+				modifyReply: function(id){
+					this.checkLogined();
+					if(!this.isModify){
+						this.isModify = true;
+						$("#reply" + id).removeClass("inline")
+						$("#reply" + id).addClass("hidden")
+						$("#modifyBody" + id).removeClass("hidden")
+						$("#modifyBody" + id).addClass("inline")
+					}
+					else{
+						this.isModify = false;
+						let url = '/usr/reply/doModifyReply?id=' + id + '&articleId=${article.id}&body=' + $("#modifyBody35 > input").val();
+						this.getReplies(url)
+						$("#reply" + id).removeClass("hidden")
+						$("#reply" + id).addClass("inline")
+						$("#modifyBody" + id).removeClass("inline")
+						$("#modifyBody" + id).addClass("hidden")
+					}
+					
+					
+				},
+				deleteReply : function(id){
+					
+					this.checkLogined();
+					if ( confirm('정말 삭제하시겠습니까?') == false ) return false;
+					let url = '/usr/reply/doDeleteReply?articleId=${article.id}&id=' + id;
+					this.getReplies(url);
+				},
 				writeReply : function(){
+					this.checkLogined();
+					if($("#replyInputFrom").val().trim() == ""){
+						alert("댓글을 작성해주세요")
+						return false;
+					}
+					
 					let url = '/usr/reply/doWriteReply?articleId=${article.id}&body=' + $("#replyInputFrom").val()
-					fetch(url)
-					.then((response) =>{
-						cloneResponse = response
-						if(cloneResponse.ok){
-							return cloneResponse.json();
-						}
-						throw new Error("Network reponse was not ok");
-					})
-					.then((json) =>{
-						this.replies = json.data1;
-						this.count = json.data2;
-					})
-					.catch((error) =>{
-						console.log(error);
-					});
+					this.getReplies(url);
 					$("#replyInputFrom").val("")
 				}
 			},
 			created() {
-				fetch('/usr/reply/getReplies?articleId=${article.id}')
-				.then((response) =>{
-					cloneResponse = response
-					if(cloneResponse.ok){
-						return cloneResponse.json();
-					}
-					throw new Error("Network reponse was not ok");
-				})
-				.then((json) =>{
-					this.replies = json.data1;
-					this.count = json.data2;
-				})
-				.catch((error) =>{
-					console.log(error);
-				});
+				let url = '/usr/reply/getReplies?articleId=${article.id}';
+				this.getReplies(url);
 			}
 			
 		})

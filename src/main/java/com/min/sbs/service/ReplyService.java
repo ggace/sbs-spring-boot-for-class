@@ -67,4 +67,8 @@ public class ReplyService {
 		replyDao.doDeleteReply(memberId, id);
 	}
 
+	public void doModifyReply(int memberId, int id, int articleId, String body) {
+		replyDao.doModifyReply(memberId, id, articleId, body);
+	}
+
 }
