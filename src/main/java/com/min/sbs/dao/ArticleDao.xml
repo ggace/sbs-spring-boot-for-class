@@ -147,7 +147,7 @@
 	</update>
 	
 	<select id="getArticleHitCount" resultType="int">
-		SELECT hitCount
+		SELECT IFNULL(hitCount,0) as S
 		FROM article
 		WHERE id=#{id}
 	</select>

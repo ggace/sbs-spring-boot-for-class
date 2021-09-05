@@ -63,7 +63,8 @@
 					<div v-for="reply in replies" class="px-3 flex">
 						<p v-bind:id="'reply' + reply.id" class="px-3 inline">{{reply.extra__memberName}}({{reply.updateDate.substring(2,16)}})  :  {{reply.body}}</p>
 						<p v-bind:id="'modifyBody' + reply.id" class="hidden" >{{reply.extra__memberName}}({{reply.updateDate.substring(2,16)}})  :  <input class="px-3 input input-bordered input-xs" v-bind:value="reply.body" /></p>
-						<button class="btn btn-xs btn-outline mx-1" v-on:click="modifyReply(reply.id)" v-if="reply.extra__actorCanDelete">수정</button>
+						<button class="btn btn-xs btn-outline mx-1" v-on:click="modifyReply(reply.id)" v-if="reply.extra__actorCanDelete && hereModify">수정</button>
+						<a class="btn btn-xs btn-outline mx-1" v-bind:href="'/usr/reply/modify?id=' + reply.id" v-if="reply.extra__actorCanDelete && !hereModify">수정</a>
 						<button class="btn btn-xs btn-secondary mx-1" v-on:click="deleteReply(reply.id)" v-if="reply.extra__actorCanDelete">삭제</button>
 					</div>
 					
@@ -89,7 +90,8 @@
 			data: {
 				replies : null,
 				count : 0,
-				isModify: false
+				isModify: false,
+				hereModify : false
 			},
 			methods: {
 				
@@ -131,7 +133,7 @@
 					}
 					else{
 						this.isModify = false;
-						let url = '/usr/reply/doModifyReply?id=' + id + '&articleId=${article.id}&body=' + $("#modifyBody35 > input").val();
+						let url = '/usr/reply/doModifyReply?id=' + id + '&articleId=${article.id}&body=' + $("#modifyBody" + id + " > input").val();
 						this.getReplies(url)
 						$("#reply" + id).removeClass("hidden")
 						$("#reply" + id).addClass("inline")

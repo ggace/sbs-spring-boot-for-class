@@ -290,6 +290,6 @@ public class UsrArticleController {
 
 		articleService.doModify(id, title, body);
 
-		return Util.jsReplace(Util.format("%s번 글을 수정하였습니다.", id), Util.format("/usr/article/detail?id=%d", id));
+		return Util.jsHistoryBack(Util.format("%s번 글을 수정하였습니다.", id));
 	}
 }

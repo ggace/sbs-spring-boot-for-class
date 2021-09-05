@@ -70,4 +70,17 @@ public interface ReplyDao {
 			""")
 	void doModifyReply(int memberId, int id, int articleId, String body);
 
+	@Select("""
+			<script>
+				SELECT R.*, M.name AS extra__memberName 
+				FROM reply AS R 
+				LEFT JOIN `member` AS M
+				ON R.memberId = M.id
+				WHERE relTypeCode='article' 
+				AND R.id=#{id}
+				ORDER BY id DESC
+			</script>
+			""")
+	Reply getReply(int id);
+
 }

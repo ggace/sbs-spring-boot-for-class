@@ -51,7 +51,7 @@ public class ReplyService {
 			return ResultData.from("F-1", "게시물이 존재하지 않습니다.");
 		}
 
-		if ( reply.getMemberId() != actorId && actorId != 1) {
+		if ( reply.getMemberId() != actorId) {
 			return ResultData.from("F-2", "권한이 없습니다.");
 		}
 
@@ -69,6 +69,10 @@ public class ReplyService {
 
 	public void doModifyReply(int memberId, int id, int articleId, String body) {
 		replyDao.doModifyReply(memberId, id, articleId, body);
+	}
+
+	public Reply getReply(int id) {
+		return replyDao.getReply(id);
 	}
 
 }
