@@ -91,7 +91,7 @@
 				replies : null,
 				count : 0,
 				isModify: false,
-				hereModify : false
+				hereModify : true
 			},
 			methods: {
 				

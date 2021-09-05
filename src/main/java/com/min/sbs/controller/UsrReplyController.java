@@ -14,12 +14,12 @@ import com.min.sbs.service.ReplyService;
 import com.min.sbs.util.Util;
 
 @Controller
-public class ReplyController {
+public class UsrReplyController {
 	private ReplyService replyService;
 	private Rq rq;
 	private ArticleService articleService;
 	
-	public ReplyController(ReplyService replyService, ArticleService articleService, Rq rq) {
+	public UsrReplyController(ReplyService replyService, ArticleService articleService, Rq rq) {
 		this.replyService= replyService;
 		this.articleService = articleService;
 		this.rq = rq;

@@ -9,12 +9,12 @@ import com.min.sbs.dto.Rq;
 import com.min.sbs.service.ReactionPointService;
 
 @Controller
-public class ReactionPointController {
+public class UsrReactionPointController {
 	private ReactionPointService reactionPointService;
 	
 	private Rq rq;
 	
-	public ReactionPointController(ReactionPointService reactionPointService, Rq rq) {
+	public UsrReactionPointController(ReactionPointService reactionPointService, Rq rq) {
 		this.reactionPointService = reactionPointService;
 		this.rq = rq;
 	}

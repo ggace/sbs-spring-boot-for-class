@@ -59,7 +59,6 @@
 				</ul>
 			</li>
 			
-			
 			<li>
 				<c:if test="${!rq.isLogined() }">
 					<a class="h-full flex px-3 items-center hover:underline" href="/usr/member/showLogin">로그인</a>
